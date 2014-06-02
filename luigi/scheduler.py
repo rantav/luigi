@@ -171,6 +171,7 @@ class CentralPlannerScheduler(Scheduler):
             task.status = status
             if status == FAILED:
                 task.retry = time.time() + self._retry_delay
+            self._update_task_history(task_id, status)
 
         if deps is not None:
             task.deps = set(deps)
@@ -182,7 +183,6 @@ class CentralPlannerScheduler(Scheduler):
 
         if expl is not None:
             task.expl = expl
-        self._update_task_history(task_id, status)
 
     def get_work(self, worker, host=None):
         # TODO: remove any expired nodes
